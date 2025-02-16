@@ -23,7 +23,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>US${price}</h1>
+      <h2>US${price}</h2>
     </div>
   );
 }
