@@ -23,6 +23,7 @@ function App() {
 
   return (
     <div className="App">
+      <h1>Bitcoin Price</h1>
       <h2>US${price}</h2>
     </div>
   );
