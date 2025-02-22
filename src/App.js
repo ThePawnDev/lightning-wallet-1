@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Transactions from "./components/Transactions";
 import "./App.css";
 
 function App() {
   const [price, setPrice] = useState(null);
   const [balance, setBalance] = useState(null);
+  const [transactions, setTransactions] = useState([]);
 
   const getPrice = () => {
     // Axios for http requests
@@ -32,7 +34,18 @@ function App() {
       })
       .catch((err) => console.log(err));
   };
-  
+
+  const getTransactions = () => {
+   const headers = {
+     "X-Api-Key": process.env.REACT_APP_ADMIN_KEY,
+   };
+   axios
+     .get("https://demo.lnbits.com/api/v1/payments", { headers })
+     .then((res) => {
+       setTransactions(res.data);
+     })
+     .catch((err) => console.log(err));
+ };
 
   // useEffect is a 'hook' that will run code based on a trigger
   // The brackets hold the trigger that determines when the code will run
@@ -40,6 +53,7 @@ function App() {
   useEffect(() => {
     getPrice();
     getWalletBalance();
+    getTransactions();
   }, []);
  
   // Run these functions every 5 seconds after initial page load
@@ -47,6 +61,7 @@ function App() {
     const interval = setInterval(() => {
       getPrice();
       getWalletBalance();
+      getTransactions();
     }, 5000);
     return () => clearInterval(interval);
   }, []);
@@ -69,7 +84,7 @@ function App() {
       </div>
       <div className="row">
         <div className="row-item">
-          {/* <Transactions transactions={transactions} /> */}
+          <Transactions transactions={transactions} />
         </div>
         <div className="row-item">{/* <Chart chartData={chartData} /> */}</div>
       </div>
