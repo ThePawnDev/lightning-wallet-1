@@ -85,7 +85,7 @@ const parseTx = (tx) => {
         );
     }
  
-    if (tx.amount < 0) {
+    if (tx.amount < 0 && tx.amount !== 1000) {
         return (
             <div id={tx.checking_id} key={tx.checking_id} className="tx-item">
                 <p>Sent with {tx.bolt11.substring(0, 25)}...</p>
