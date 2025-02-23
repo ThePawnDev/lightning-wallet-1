@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Transactions from "./components/Transactions";
+import Buttons from "./components/Buttons";
 import "./App.css";
 
 function App() {
@@ -71,7 +72,7 @@ function App() {
       <header>
         <h1>My First ln Wallet</h1>
       </header>
-      {/* <Buttons /> */}
+      <Buttons/>
       <div className="row">
         <div className="balance-card">
           <h2>Balance</h2>
