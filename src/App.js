@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Transactions from "./components/Transactions";
 import Buttons from "./components/Buttons";
+import Chart from "./components/Chart";
 import "./App.css";
 
 function App() {
   const [price, setPrice] = useState(null);
   const [balance, setBalance] = useState(null);
   const [transactions, setTransactions] = useState([]);
+  const [chartData, setChartData] = useState(null);
 
   const getPrice = () => {
     // Axios for http requests
@@ -16,6 +18,7 @@ function App() {
       // Using .then to run if the API call is successful
       .then((res) => {
         setPrice(res.data.data.amount);
+        updateChartData(res.data.data.amount);
       })
       // Using .catch to run if the API call fails
       .catch((err) => {
@@ -47,6 +50,37 @@ function App() {
      })
      .catch((err) => console.log(err));
  };
+
+  const updateChartData = (currentPrice) => {
+    const timestamp = Date.now();
+       // We are able to grab the previous state to look at it and do logic before adding new data to it
+    setChartData((prevState) => {
+      // If we have no previous state, create a new array with the new price data
+      if (!prevState)
+        return [
+          {
+            x: timestamp,
+            y: Number(currentPrice),
+          },
+        ];
+      // If the timestamp or price has not changed, we don't want to add a new point
+      if (
+        prevState[prevState.length - 1].x === timestamp ||
+        prevState[prevState.length - 1].y === Number(currentPrice)
+      )
+        return prevState;
+      // If we have previous state than keep it and add the new price data to the end of the array
+      return [
+        // Here we use the "spread operator" to copy the previous state
+        ...prevState,
+        {
+          x: timestamp,
+          y: Number(currentPrice),
+        },
+      ];
+    });
+  };
+ 
 
   // useEffect is a 'hook' that will run code based on a trigger
   // The brackets hold the trigger that determines when the code will run
@@ -87,7 +121,9 @@ function App() {
         <div className="row-item">
           <Transactions transactions={transactions} />
         </div>
-        <div className="row-item">{/* <Chart chartData={chartData} /> */}</div>
+        <div className="row-item">
+          <Chart chartData={chartData} />
+        </div>
       </div>
       <footer>
         <p>It's crappy, but might just work.</p>
