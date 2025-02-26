@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
+import {QRCodeSVG} from 'qrcode.react';
 import axios from "axios";
 import "./PaymentsModal.css";
 
@@ -140,6 +141,7 @@ const PaymentsModal = ({ modalState, setModalState }) => {
         {invoice && (
         <section>
             <h3>Invoice created</h3>
+            <QRCodeSVG value={invoice} />
             <p>{invoice}</p>
             {/* ToDo: Create a QR code out of this invoice as well */}
         </section>
