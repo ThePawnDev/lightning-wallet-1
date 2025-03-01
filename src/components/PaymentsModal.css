@@ -3,28 +3,35 @@ form {
     display: flex;
     flex-direction: column;
     text-align: center;
-   }
+}
    
-   form {
+form {
     width: 100%;
-   }
+}
    
-   form .button {
+form .button {
     margin: 10% auto;
-   }
+}
    
-   section h3 {
+section h3 {
     text-align: center;
-   }
+}
    
-   section p {
+section p {
     word-wrap: break-word;
-   }
+}
    
-   .close-button {
+.close-button {
     cursor: pointer;
     text-align: end;
-   }
+}
+
+.invoice_qr {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
    
    
    

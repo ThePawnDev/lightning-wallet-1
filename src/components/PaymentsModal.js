@@ -18,6 +18,7 @@ const PaymentsModal = ({ modalState, setModalState }) => {
     const [formData, setFormData] = useState({
         amount: 0,
         invoiceToPay: "",
+        memo:"",
     });
     // The state for storing the invoice we created to be paid
     const [invoice, setInvoice] = useState("");
@@ -59,11 +60,15 @@ const PaymentsModal = ({ modalState, setModalState }) => {
                 "X-Api-Key": process.env.REACT_APP_ADMIN_KEY,
             };
             const data = {
-                amount: formData.amount,
+                
                 out: false,
-                // ToDo: Add additional form for user to be able to customize the memo
-                memo: "LNBits",
+                memo: formData.memo,
             };
+            // Only generate the invoice if the amount is > 0
+            // LNBits demo server does not support generic invoices with no value
+            if (formData.amount > 0) {
+                data.amount = parseFloat(formData.amount);
+            }
             axios
                 .post("https://demo.lnbits.com/api/v1/payments", data, { headers })
                 .then((res) => setInvoice(res.data.payment_request))
@@ -132,6 +137,15 @@ const PaymentsModal = ({ modalState, setModalState }) => {
                     setFormData({ ...formData, amount: e.target.value })
                 }
                 />
+            <label>Memo</label>
+            <input
+                type="text"
+                placeholder="Leave a Message"
+                value={formData.memo}
+                onChange={(e) =>
+                    setFormData({ ...formData, memo: e.target.value })
+                }
+            />
             <button className="button" onClick={(e) => handleReceive(e)}>
                 Submit
             </button>
@@ -141,9 +155,11 @@ const PaymentsModal = ({ modalState, setModalState }) => {
         {invoice && (
         <section>
             <h3>Invoice created</h3>
-            <QRCodeSVG value={invoice} />
+            <div className="invoice_qr" >
+                <QRCodeSVG value={invoice} />
+            </div>
+            <p>Memo: {formData.memo}</p>
             <p>{invoice}</p>
-            {/* ToDo: Create a QR code out of this invoice as well */}
         </section>
         )}
         {/* If we are displaying the status of our successful payment */}

@@ -16,13 +16,14 @@ const Chart = ({ chartData }) => {
     return (
         <div className="chart-container">
             {chartData && chartData.length <= 1 ? (
-            // ToDo: Add a loading spinner
-            <p>Loading</p>
+            <div className="loading-container">
+                <div className="loading-spinner"></div>
+                <p>Loading...</p>
+            </div>
             ) : (
             <LineChart
                 xLabel="Time"
                 height={300}
-                //  ToDo: Customize width to be responsive based on screen size
                 width={550}
                 data={data}
                 onPointHover={(obj) => `price: $${obj.y}<br />time: ${obj.x}`}
