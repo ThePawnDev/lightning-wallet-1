@@ -27,6 +27,8 @@ const PaymentsModal = ({ modalState, setModalState }) => {
         paymentHash: "",
         checkingId: "",
     });
+
+    
  
     const handleSend = (e) => {
         // Keep the page from refreshing when the form is submitted
